@@ -34,6 +34,23 @@ themeToggle.addEventListener("click", () => {
     localStorage.setItem("theme", !isDark ? "dark" : "light");
 });
 
+function updateColumnCounts() {
+    Object.entries(todoLists).forEach(([status, list]) => {
+        const column = list.closest(".todo-column");
+        if (!column) return;
+        const header = column.querySelector(".todo-column-header");
+        let countBadge = header.querySelector(".column-count");
+        if (!countBadge) {
+            countBadge = document.createElement("span");
+            countBadge.className = "column-count";
+            countBadge.setAttribute("aria-hidden", "true");
+            header.append(countBadge);
+        }
+        const count = todos.filter((t) => t.status === status).length;
+        countBadge.textContent = count;
+    });
+}
+
 function renderTodos() {
     Object.values(todoLists).forEach((list) => {
         list.innerHTML = "";
@@ -43,21 +60,16 @@ function renderTodos() {
         const listItem = document.createElement("li");
         listItem.className = "todo-item";
 
-        const content = document.createElement("div");
-        content.className = "todo-item-content";
-
-        const header = document.createElement("div");
-        header.className = "todo-item-header";
-
         const text = document.createElement("span");
+        text.className = "todo-item-text";
         text.textContent = todo.text;
+
+        const footer = document.createElement("div");
+        footer.className = "todo-item-footer";
 
         const badge = document.createElement("span");
         badge.className = `todo-status-badge status-${todo.status}`;
         badge.textContent = statusLabels[todo.status];
-
-        header.append(text, badge);
-        content.append(header);
 
         const actions = document.createElement("div");
         actions.className = "todo-item-actions";
@@ -82,12 +94,16 @@ function renderTodos() {
         deleteButton.type = "button";
         deleteButton.textContent = "Delete";
         deleteButton.addEventListener("click", () => {
-            todos.splice(index, 1);
-            renderTodos();
+            listItem.classList.add("todo-item-leaving");
+            listItem.addEventListener("animationend", () => {
+                todos.splice(index, 1);
+                renderTodos();
+            }, { once: true });
         });
 
         actions.append(statusSelect, deleteButton);
-        listItem.append(content, actions);
+        footer.append(badge, actions);
+        listItem.append(text, footer);
         todoLists[todo.status].append(listItem);
     });
 
@@ -101,6 +117,8 @@ function renderTodos() {
         emptyMessage.textContent = `No ${statusLabels[status].toLowerCase()} tasks.`;
         list.append(emptyMessage);
     });
+
+    updateColumnCounts();
 }
 
 todoForm.addEventListener("submit", (event) => {
