@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="app">
+        <section class="todo-card" aria-labelledby="todo-heading">
+            <h1 id="todo-heading">Todo List</h1>
+            <form class="todo-form" id="todo-form">
+                <label class="visually-hidden" for="todo-input">Add a todo</label>
+                <input
+                    id="todo-input"
+                    name="todo"
+                    type="text"
+                    placeholder="Add a new task"
+                    autocomplete="off"
+                    required
+                >
+                <label class="visually-hidden" for="todo-status">Todo status</label>
+                <select id="todo-status" name="status" aria-label="Todo status">
+                    <option value="new">New</option>
+                    <option value="wip">WIP</option>
+                    <option value="done">Done</option>
+                </select>
+                <button type="submit">Add</button>
+            </form>
+            <section class="todo-board" aria-label="Todo board">
+                <article class="todo-column column-new" aria-labelledby="column-new-heading">
+                    <div class="todo-column-header">
+                        <h2 id="column-new-heading">New</h2>
+                    </div>
+                    <ul class="todo-list" id="todo-list-new" aria-live="polite"></ul>
+                </article>
+                <article class="todo-column column-wip" aria-labelledby="column-wip-heading">
+                    <div class="todo-column-header">
+                        <h2 id="column-wip-heading">WIP</h2>
+                    </div>
+                    <ul class="todo-list" id="todo-list-wip" aria-live="polite"></ul>
+                </article>
+                <article class="todo-column column-done" aria-labelledby="column-done-heading">
+                    <div class="todo-column-header">
+                        <h2 id="column-done-heading">Done</h2>
+                    </div>
+                    <ul class="todo-list" id="todo-list-done" aria-live="polite"></ul>
+                </article>
+            </section>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
