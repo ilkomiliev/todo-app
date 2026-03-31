@@ -9,7 +9,12 @@
 <body>
     <main class="app">
         <section class="todo-card" aria-labelledby="todo-heading">
-            <h1 id="todo-heading">Todo List</h1>
+            <div class="todo-card-header">
+                <h1 id="todo-heading">Todo List</h1>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                    <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+                </button>
+            </div>
             <form class="todo-form" id="todo-form">
                 <label class="visually-hidden" for="todo-input">Add a todo</label>
                 <input
